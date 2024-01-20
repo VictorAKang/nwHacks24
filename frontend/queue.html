@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EquQueue</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jost&display=swap" rel="stylesheet">
+</head>
+<header>
+  <div class="logo">
+    <h3>EduQueue</h3>
+  </div>
+</header>
+
+<body>
+
+  <div id="realTime"></div>
+
+  <script>
+    // Function to update the real-time clock
+    function updateClock() {
+      // Get the current date and time
+      var now = new Date();
+
+      // Format the time as HH:MM:SS
+      var hours = now.getHours().toString().padStart(2, '0');
+      var minutes = now.getMinutes().toString().padStart(2, '0');
+      var seconds = now.getSeconds().toString().padStart(2, '0');
+
+      // Display the time in the specified element
+      document.getElementById('realTime').textContent = hours + ':' + minutes + ':' + seconds;
+    }
+
+    // Update the clock every second
+    setInterval(updateClock, 1000);
+
+    // Initial call to display the time immediately
+    updateClock();
+  </script>
+
+  <ul>
+
+    <div class = "entry-container">
+      <div class = "entryServed">
+        <li>
+          <h3>Name: Mary Jane</h3>
+          <h3>Category: Lecture </h3>
+          <h3>Question: I have a question. </h3>
+        </li>
+      </div>
+    <div class = "entry">
+      <div class = "info"> 
+        Name: John Doe  #Exam 
+        <span class="plus">+</span>
+      </div>
+        <div class = "question">
+          <h3>Question: I have a question too. </h3>
+   
+      </div>
+      <li>
+        
+        
+      </li>
+    </div>
+    </div>
+  </ul>
+  <script src="script.js"></script>
+  <script>
+    const accordion = document.getElementsByClassName('entry');
+
+    for (i = 0; i < accordion.length; i++){
+      accordion[i].addEventListener('click', function(){
+        this.classList.toggle('active');
+      })
+    }
+  </script>
+</body>
+
+</html>
