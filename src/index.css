@@ -1,0 +1,25 @@
+head{
+
+}
+
+body{
+   /* background-color: papayawhip;*/
+    color: grey;
+    font-family:'Jost', sans-serif;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center; /*center contents*/
+    justify-content: center;
+    
+}
+
+footer{
+    font-size: 10px;
+}
+
+
+header{
+    font-size: 20px;
+}
