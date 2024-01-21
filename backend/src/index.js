@@ -171,7 +171,7 @@ class Queue {
         console.log(sids)
         // console.log( sids[0] === this.currentSids[0])
         sids.forEach( entry => {
-            if( this.currentSids.some( c => c === entry ) ){ 
+            if( this.currentSids.some( c => Number(c) === Number(entry) ) ){ 
                 retStr += ' ' + entry;
                 // console.log('a')
             }
