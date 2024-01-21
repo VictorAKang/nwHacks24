@@ -76,20 +76,22 @@ function parseEntryToJSON(entryString) {
 }
 
 function parseQueueToJSON( qString ) {
-    const entries = qString.split('€');
+  if( qString == "" || qString == undefined) return "";
+  const entries = qString.split('€');
 
-    const jsonEntries = entries.map(entry => {
-        return JSON.parse( entry );
-    });
-    return jsonEntries;
+  const jsonEntries = entries.map(entry => {
+      return JSON.parse( entry );
+  });
+  return jsonEntries;
 }
 
-function parseJSONToHTMLEntry( json, entryType ) {
+function parseJSONToHTMLEntry( json, entryType, sid ) {
   var elem = `<div class = ${entryType}>` +
     `<div class = "info">` +
       `<p> ${ json.asker.name }  |   ${ json.category }` +
       `<span class="plus">` +
-      `<span id="trash" class="trash fa fa-trash"></span>` +
+      `<span id=${json.asker.sid} class="trash fa fa-trash" onClick="setTrashButton( this.id )"></span>` +
+      // `<span id="trash" class="trash fa fa-trash"></span>` +
       `+</span>` +
       `</p>` + 
     `</div>` +
@@ -112,11 +114,12 @@ function setAccordian( className ) {
 }
 
 function setTrashButton( sid ) {
-  alert( sid )
+  // alert( sid )
   var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
   xmlhttp.onreadystatechange = function() { 
     if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
-      alert( `Question ${sid} Successfuly deleted!`)
+      httpGetAsync( () => {return});
+      // alert( `Question ${sid} Successfuly deleted!`)
     }
   };
   xmlhttp.open("POST", "http://localhost:3000/removeQuestionBySID");
@@ -124,78 +127,58 @@ function setTrashButton( sid ) {
   xmlhttp.send( JSON.stringify( { "sid":sid } ) );
 }
 
-function setButton( data ) {
-  const trash = document.getElementsByClassName('trash');
-  for (i = 0; i < data.length; i++){
-    // trash[i].addEventListener('click', setTrashButton( data[ i ].asker.sid ) );
-    trash[i].addEventListener('click', function ()  {
-      // setTrashButton( 5);
-      setTrashButton( data[ i ].asker.sid );
-    } );
-    console.log( `attaching ${i} to sid ${data[i].asker.sid}`)
-  }
-}
+// function setButton( data ) {
+//   const trash = document.getElementsByClassName('trash');
+//   for (i = 0; i < data.length; i++){
+//     // trash[i].addEventListener('click', setTrashButton( data[ i ].asker.sid ) );
+//     trash[i].addEventListener('click', function ()  {
+//       // setTrashButton( 5);
+//       setTrashButton( data[ i ].asker.sid );
+//     } );
+//     console.log( `attaching ${i} to sid ${data[i].asker.sid}`)
+//   }
+// }
 
 function injectQueue( data ) {
   var list = document.getElementById( 'list' );
+  if( data == "" ) { list.innerHTML=""; return;}
   var hmtlStr = `<div class = "entry-container">`;
-  // list.innerHTML = `<div class = "entry-container">`;
 
   for( var i = 0; i < data.length; i++ ) {
-    // list.innerHTML += parseJSONToHTMLEntry( data[ i ] );
     if( i == 0 ) var entryType = "entryServed";
     else var entryType = "entry";
     hmtlStr += parseJSONToHTMLEntry( data[ i ], entryType );
   }
-  // data.foreach( entry => {
-  //   queueStr = queueStr.concat( '\n', parseJSONToHTMLEntry( entry ) );
-  // });
-  // list.innerHTML += `<\div>`;
   hmtlStr += `<\div>`;
 
   list.innerHTML = hmtlStr;
-  setButton( data );
+  // setButton( data );
 
   setAccordian( "entry" );
   setAccordian( "entryServed" );
 }
 
-// var idling = true;
-
-function httpGetAsync()
+function httpGetAsync( callback )
 { 
-  // idling = false;
-  setTimeout( 10000)
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() { 
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-            var out = parseQueueToJSON(xmlHttp.responseText);
-            console.log( out );
-            injectQueue( out );
-            update();
-            // idling = true;
-        }
+      if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+        // console.log( xmlHttp.responseText=="")
+        var out = parseQueueToJSON(xmlHttp.responseText.q);
+        console.log( out );
+        injectQueue( out );
+        callback();
+      }
     }
     xmlHttp.open("GET", url, true); // true for asynchronous 
     xmlHttp.send(null);
 }
 
 function update() {
-  // while( 1 ) {
-  //   if( idling )
-  //     setTimeout( () => {
-  //       console.log( "updating...");
-  //       // httpGetAsync();
-  //     }, 10000 );
-  // }
   setTimeout( () => {
     console.log( "updating ..." );
-    httpGetAsync();
+    httpGetAsync( () => update() );
   }, 5000);
 }
 
 update()
-
-// setTimeout(() => {
-//   httpGetAsync();
-// }, 5000);

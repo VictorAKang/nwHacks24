@@ -103,6 +103,7 @@ class Queue {
             outStr = outStr.concat( '€', entry.parseToJSON() );
         });
 
+        if( outStr == "" ) return "";
         return outStr.slice(1);
     }
 
@@ -121,10 +122,11 @@ class Queue {
 
     removeQuestionBySID( sid ) {
         console.log(sid)
+        console.log(typeof(sid))
         let index = 0;
         this.q.forEach( entry => {
-            console.log( sid, entry, sid == entry );
-            if (entry.asker.sid === sid) {
+            // console.log( sid, entry, Number(sid) == entry.asker.sid );
+            if (entry.asker.sid === Number( sid ) ) {
                 this.q.splice(index, 1);
                 console.log( 'Successfully removed the question: ' + entry.question + `of sid ${entry.asker.sid}` );
                 return entry;
@@ -212,7 +214,7 @@ function start() {
   app.get( '/getQueue', function(req, res) {
     console.log('Recieved a GET call for the queue!');
     console.log( q.parseToJSON() );
-    res.send( q.parseToJSON() );
+    res.send( JSON.stringify( { "q":q.parseToJSON() }) );
   });
 
   app.get( '/getCurrentQuestion', function(req, res) {
