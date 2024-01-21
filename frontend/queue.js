@@ -112,10 +112,10 @@ function setAccordian( className ) {
 }
 
 function setTrashButton( sid ) {
-  // alert( sid )
+  alert( sid )
   var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
   xmlhttp.onreadystatechange = function() { 
-    if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
       alert( `Question ${sid} Successfuly deleted!`)
     }
   };
@@ -132,6 +132,7 @@ function setButton( data ) {
       // setTrashButton( 5);
       setTrashButton( data[ i ].asker.sid );
     } );
+    console.log( `attaching ${i} to sid ${data[i].asker.sid}`)
   }
 }
 

@@ -3,7 +3,8 @@ function showNotif() {
 }
 
 function callbackNotif( data ) {
-    // console.log( data )
+    // console.log( data == "" )
+    if( data == "" ) return;
     if( data != undefined ) { 
         sids = JSON.parse(localStorage.getItem( "sid" ));
         console.log(typeof(sids))

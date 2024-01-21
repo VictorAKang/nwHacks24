@@ -120,13 +120,13 @@ class Queue {
     }
 
     removeQuestionBySID( sid ) {
-        // console.log(sid)
+        console.log(sid)
         let index = 0;
         this.q.forEach( entry => {
             console.log( sid, entry, sid == entry );
             if (entry.asker.sid === sid) {
                 this.q.splice(index, 1);
-                console.log( 'Successfully removed the question: ' + entry.question );
+                console.log( 'Successfully removed the question: ' + entry.question + `of sid ${entry.asker.sid}` );
                 return entry;
             }
             index++;
@@ -151,6 +151,8 @@ class Queue {
     }
 
     checkCurrentSids( data ) {
+        // console.log( data.sid )
+        if( data.sid == undefined ) return "";
         var sids = data.sids.slice( 1, -1 ).split( ',' ).map( c => Number( c.slice( 1, -1 ) ) );
         // console.log( sids )
 
