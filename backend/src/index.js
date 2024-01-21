@@ -33,28 +33,43 @@ class Entry {
     flipReadyToTalk() {
         this.readyToTalk = !this.readyToTalk;
     }
+    
+    parseToJSON() {
+        var followersStr = "";
 
-  parseToJSON() {
-    const entryObject = {
-      readyToTalk: this.readyToTalk,
-      asker: {
-        name: this.asker.name,
-        sid: this.asker.sid
-      },
-      question: this.question,
-      category: this.category,
-      followers: this.followers.map(follower => ({
-        name: follower.name,
-        sid: follower.sid
-      }))
-    };
-    return JSON.stringify(entryObject);
-  }
+        this.followers.forEach( entry=> {
+            var s = JSON.stringify( {
+                name: entry.name,
+                sid: entry.sid
+            });
+            followersStr = followersStr.concat( '¥', s );
+        });
+
+        const entryObject = {
+            readyToTalk: this.readyToTalk,
+            asker: {
+                name: this.asker.name,
+                sid: this.asker.sid
+            },
+            question: this.question,
+            category: this.category,
+            // followers: this.followers.map(follower => ({
+            //     name: follower.name,
+            //     sid: follower.sid
+            // }))
+            followers: followersStr
+        };
+        
+        return JSON.stringify(entryObject);
+
+
+    }
 }
 
 class Queue {
     constructor() {
         this.q = [];
+        this.currentQuestion = null;
     }
 
     // only add this entry if the student is not present
@@ -67,9 +82,7 @@ class Queue {
       } else {
           console.log(`${entry.asker.name}'s question not added to the queue. Student is already in the queue.`);
       }
-
-
-        //this.q.push( entry );
+      this.updateCurrentQuestion();
     }
 
     //assume that entry is someone who is readytotalk
@@ -78,20 +91,44 @@ class Queue {
     closeQuestion( entry ){
       console.log(`${entry.asker.name}'s question closed.`);
       this.q.remove( entry );
+      this.updateCurrentQuestion();
+    }
+    
+    parseToJSON() {
+        // var returnArray = [];
+        // this.q.forEach(entry => {
+        //   console.log(entry);
+        //   console.log(entry.parseToJSON());
+        //   returnArray.push(JSON.stringify(entry.parseToJSON()));
+        // });
+        // return returnArray;
+
+        var outStr = "";
+        
+        this.q.forEach( entry => {
+            // console.log( entry )
+            outStr = outStr.concat( '€', entry.parseToJSON() );
+        });
+
+        return outStr.slice(1);
     }
 
-    parseToJSON() {
-      var returnArray = [];
-      this.q.forEach(entry => {
-        console.log(entry);
-        console.log(entry.parseToJSON());
-        returnArray.push(JSON.stringify(entry.parseToJSON()));
-      });
-      return returnArray;
+    updateCurrentQuestion() {
+        if (this.q.length === 0) {
+            this.currentQuestion = null;
+        }
+        this.currentQuestion = this.q[0];
     }
 }
 
 var q;
+
+function addEntry( body ) {
+    // var j = JSON.parse( body );
+    var s = new Student( body.name, body.sid );
+    var e = new Entry( s, body.question, body.category );
+    q.addQuestion( e );
+}
 
 function start() {
   q = new Queue();
@@ -107,18 +144,26 @@ function start() {
   app.use( cors() );
 
   app.post( "/addEntry", function ( req, res ) {
+    console.log( "Got request to add Entry with the following data:" );
     console.log( req.body );
+    addEntry( req.body );
   });
 
   app.get( '/', function(req, res) {
     console.log('Got get request!');
     res.send( "hello there!" );
   });
-
+  
   app.get( '/getQueue', function(req, res) {
-    console.log('Added an entry into the queue!');
+    console.log('Recieved a GET call for the queue!');
     console.log( q.parseToJSON() );
-    res.send( (q.parseToJSON().toString()) );
+    res.send( q.parseToJSON() );
+  });
+
+  app.get( '/getCurrentQuestion', function(req, res) {
+    console.log('Received a GET call for the queue current question!');
+    console.log( q.currentQuestion.parseToJSON() );
+    res.send( q.currentQuestion.parseToJSON() );
   })
 
   app.listen(port, function () {
@@ -126,4 +171,4 @@ function start() {
   });
 }
 
-start()
+start();

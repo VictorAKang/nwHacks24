@@ -1,3 +1,4 @@
+
 //Loader animation code
 window.addEventListener("load", () => {
   const loader = document.querySelector(".loader");
@@ -14,3 +15,4 @@ window.addEventListener("load", () => {
     document.body.removeChild(loader);
   });
 });
+
