@@ -1,4 +1,4 @@
-url = "http://localhost:3000/addEntry"
+// url = "http://localhost:3000/addEntry"
 
 // function httpGetAsync()
 // {
@@ -13,9 +13,12 @@ url = "http://localhost:3000/addEntry"
 
 // httpGetAsync();
 
-function f() {
-    var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
-    xmlhttp.open("POST", url);
-    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xmlhttp.send(JSON.stringify({ "email": "hello@user.com", "response": { "name": "Tester" } }));
-}
+// function f() {
+//     var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+//     xmlhttp.open("POST", url);
+//     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+//     xmlhttp.send(JSON.stringify({ "email": "hello@user.com", "response": { "name": "Tester" } }));
+// }
+
+localStorage.setItem("name", "Victor")
+console.log(localStorage.getItem("name"))

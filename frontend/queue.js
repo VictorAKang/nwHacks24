@@ -1,22 +1,22 @@
 //Loader animation code
-window.addEventListener("load", () => {
-  const loader = document.querySelector(".loader");
+// window.addEventListener("load", () => {
+//   const loader = document.querySelector(".loader");
 
-  //loader without delay
-  //loader.classList.add("loader-hidden");
-  setTimeout(() => loader.classList.add("loader-hidden"), 1000);
+//   //loader without delay
+//   //loader.classList.add("loader-hidden");
+//   setTimeout(() => loader.classList.add("loader-hidden"), 1000);
 
-  loader.addEventListener("transitionend", () => {
-    document.body.removeChild("loader");
-  });
-})
+//   loader.addEventListener("transitionend", () => {
+//     document.body.removeChild("loader");
+//   });
+// })
 
 
 // accordion for now serving entry
 const accordion0 = document.getElementsByClassName('entryServed');
 
 for (i = 0; i < accordion0.length; i++){
-  accordion0[i].addEventListener('click', function(){
+  accordion0[i].addEventListener('click',  function(){
     this.classList.toggle('active');
   })
 }
@@ -75,14 +75,38 @@ function parseQueueToJSON( qString ) {
     return jsonEntries;
 }
 
+function parseJSONToHTMLEntry( json ) {
+  var elem = `<div class = "entry">` +
+    `<div class = "info">` +
+      `<p> ${ json.asker.name }  |   ${ json.category }` +
+      `<span class="plus">+</span>` +
+      `</p>` + 
+    `</div>` +
+      `<div class = "question">` + 
+          `Question: ${ json.question }` +
+      `</div>` + 
+    `</div>`;
 
-function parseJSONToHTML( listOfJSONEntries ) {
-  listOfJSONEntries.forEach(function(entry, index) {
-    console.log('Index ' + index + ': ' + fruit);
-  });
+  return elem;
 }
 
+function injectQueue( data ) {
+  var list = document.getElementById( 'list' );
+  var hmtlStr = `<div class = "entry-container">`;
+  // list.innerHTML = `<div class = "entry-container">`;
 
+  for( var i = 0; i < data.length; i++ ) {
+    // list.innerHTML += parseJSONToHTMLEntry( data[ i ] );
+    hmtlStr += parseJSONToHTMLEntry( data[ i ] );
+  }
+  // data.foreach( entry => {
+  //   queueStr = queueStr.concat( '\n', parseJSONToHTMLEntry( entry ) );
+  // });
+  // list.innerHTML += `<\div>`;
+  hmtlStr += `<\div>`;
+
+  list.innerHTML = hmtlStr;
+}
 
 function httpGetAsync()
 {
@@ -90,7 +114,8 @@ function httpGetAsync()
     xmlHttp.onreadystatechange = function() { 
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
             var out = parseQueueToJSON(xmlHttp.responseText);
-            parseJSONToHTML(out);
+            console.log( out );
+            injectQueue( out );
         }
     }
     xmlHttp.open("GET", url, true); // true for asynchronous 

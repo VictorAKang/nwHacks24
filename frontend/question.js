@@ -37,8 +37,8 @@ function getEntry() {
   console.log( "sending POST request with the following data:" );
   console.log( obj );
   var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
-  xmlHttp.onreadystatechange = function() {
-    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+  xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState === XMLHttpRequest.DONE && xmlhttp.status === 200) {
       alert( "Question added to Queue!" );
       window.location.href = 'queue.html';
     }
