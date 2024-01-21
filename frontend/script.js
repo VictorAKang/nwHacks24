@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 // class Student {
 //     constructor( name, sid ) {
@@ -134,3 +135,17 @@ window.addEventListener("load", () => {
     document.body.removeChild(loader);
   });
 })
+=======
+//Loader animation code
+window.addEventListener("load", () => {
+  const loader = document.querySelector(".loader");
+
+  //loader without delay
+  //loader.classList.add("loader-hidden");
+  setTimeout(() => { loader.classList.add("loader-hidden"); console.log("loading...")}, 1000) ;
+
+  loader.addEventListener("transitionend", () => {
+    document.body.removeChild(loader);
+  });
+});
+>>>>>>> 33b19376cd27237b2a67484e6e08650d2ad3fd18

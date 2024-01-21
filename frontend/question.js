@@ -33,7 +33,11 @@ function getEntry() {
     "question": inputs.get( 'question' ),
     "category": inputs.get( 'category')
   };
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 33b19376cd27237b2a67484e6e08650d2ad3fd18
   console.log( "sending POST request with the following data:" );
   console.log( obj );
   var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 

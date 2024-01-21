@@ -33,6 +33,23 @@ class Entry {
     flipReadyToTalk() {
         this.readyToTalk = !this.readyToTalk;
     }
+    
+    parseToJSON() {
+        const entryObject = {
+        readyToTalk: this.readyToTalk,
+        asker: {
+            name: this.asker.name,
+            sid: this.asker.sid
+        },
+        question: this.question,
+        category: this.category,
+        followers: this.followers.map(follower => ({
+            name: follower.name,
+            sid: follower.sid
+        }))
+        };
+        return JSON.stringify(entryObject);
+    }
 }
 
 class Queue {
@@ -62,6 +79,16 @@ class Queue {
       console.log(`${entry.asker.name}'s question closed.`);
       this.q.remove( entry );
     }
+    
+    parseToJSON() {
+        var returnArray = [];
+        this.q.forEach(entry => {
+          console.log(entry);
+          console.log(entry.parseToJSON());
+          returnArray.push(JSON.stringify(entry.parseToJSON()));
+        });
+        return returnArray;
+    }
 }
 
 var q;
@@ -75,6 +102,10 @@ function addEntry( body ) {
 
 function start() {
   q = new Queue();
+
+  q.addQuestion(new Entry(new Student("Bowen", 49604481), "What is 1+1?", "Other"));
+  q.addQuestion(new Entry(new Student("Bowen1", 496044811), "What is 2+2?", "Other1"));
+  q.addQuestion(new Entry(new Student("Bowen2", 496044812), "What is 3+3?", "Other2"));
 
   const app = express();
   const port = 3000;
@@ -91,6 +122,12 @@ function start() {
   app.get( '/', function(req, res) {
     console.log('Got get request!');
     res.send( "hello there!" );
+  });
+  
+  app.get( '/getQueue', function(req, res) {
+    console.log('Added an entry into the queue!');
+    console.log( q.parseToJSON() );
+    res.send( (q.parseToJSON().toString()) );
   });
 
   app.listen(port, function () {
