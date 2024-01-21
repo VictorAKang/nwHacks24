@@ -119,6 +119,28 @@ class Queue {
         }
         this.currentQuestion = this.q[0];
     }
+
+    removeQuestionBySID( sid ) {
+        let index = 0;
+        this.q.forEach( entry => {
+            if (entry.asker.sid === sid) {
+                this.q.splice(index, 1);
+                console.log( 'Successfully removed the question: ' + entry.question );
+                return entry;
+            }
+            index++;
+        });
+    }
+
+    addFollowerToQuestion( questionSID, studentSID, studentName ) {
+        this.q.forEach( entry => {
+            if (entry.asker.sid ===  questionSID) {
+                entry.followers.push(new Student(studentName, studentSID));
+                console.log( studentSID + ' successfully added to the question: ' + entry.question );
+                return;
+            }
+        });
+    }
 }
 
 var q;
@@ -164,7 +186,21 @@ function start() {
     console.log('Received a GET call for the queue current question!');
     console.log( q.currentQuestion.parseToJSON() );
     res.send( q.currentQuestion.parseToJSON() );
-  })
+  });
+
+  app.post( '/removeQuestionBySID', function(req, res) {
+    console.log( 'Received a POST call to remove a question by SID');
+    const removedQuestion = q.removeQuestionBySID();
+    console.log( removedQuestion.parseToJSON() );
+    res.send( removedQuestion.parseToJSON() );
+  });
+
+  app.post( '/addFollowerToQuestion', function(req, res) {
+    console.log( 'Received a POST call to add follower to a question with the data:' );
+    console.log( req.body );
+    q.addFollowerToQuestion( req.body );
+    res.send( "Success!" );
+  });
 
   app.listen(port, function () {
     console.log(`Example app listening on port ${port}!`);
