@@ -33,6 +33,23 @@ class Entry {
     flipReadyToTalk() {
         this.readyToTalk = !this.readyToTalk;
     }
+
+  parseToJSON() {
+    const entryObject = {
+      readyToTalk: this.readyToTalk,
+      asker: {
+        name: this.asker.name,
+        sid: this.asker.sid
+      },
+      question: this.question,
+      category: this.category,
+      followers: this.followers.map(follower => ({
+        name: follower.name,
+        sid: follower.sid
+      }))
+    };
+    return JSON.stringify(entryObject);
+  }
 }
 
 class Queue {
@@ -62,6 +79,10 @@ class Queue {
       console.log(`${entry.asker.name}'s question closed.`);
       this.q.remove( entry );
     }
+
+  parseToJSON() {
+    
+  }
 }
 
 var q;
@@ -84,7 +105,7 @@ function start() {
     res.send( "hello there!" );
   });
 
-  app.listen(port, function () {
+  app.listen(port, '0.0.0.0', function () {
     console.log(`Example app listening on port ${port}!`);
   });
 }
