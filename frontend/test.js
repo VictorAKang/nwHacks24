@@ -1,21 +1,24 @@
-url = "http://localhost:3000/addEntry"
+// url = "http://localhost:3000/addEntry"
 
-function httpGetAsync()
-{
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() { 
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-            console.log(xmlHttp.responseText);
-    }
-    xmlHttp.open("GET", url, true); // true for asynchronous 
-    xmlHttp.send(null);
-}
+// function httpGetAsync()
+// {
+//     var xmlHttp = new XMLHttpRequest();
+//     xmlHttp.onreadystatechange = function() { 
+//         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+//             console.log(xmlHttp.responseText);
+//     }
+//     xmlHttp.open("GET", url, true); // true for asynchronous 
+//     xmlHttp.send(null);
+// }
 
-httpGetAsync();
+// httpGetAsync();
 
-function f() {
-    var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
-    xmlhttp.open("POST", url);
-    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xmlhttp.send(JSON.stringify({ "email": "hello@user.com", "response": { "name": "Tester" } }));
-}
+// function f() {
+//     var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+//     xmlhttp.open("POST", url);
+//     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+//     xmlhttp.send(JSON.stringify({ "email": "hello@user.com", "response": { "name": "Tester" } }));
+// }
+
+localStorage.setItem("name", "Victor")
+console.log(localStorage.getItem("name"))

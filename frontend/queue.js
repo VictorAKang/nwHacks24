@@ -1,22 +1,22 @@
 //Loader animation code
-window.addEventListener("load", () => {
-  const loader = document.querySelector(".loader");
+// window.addEventListener("load", () => {
+//   const loader = document.querySelector(".loader");
 
-  //loader without delay
-  //loader.classList.add("loader-hidden");
-  setTimeout(() => loader.classList.add("loader-hidden"), 1000);
+//   //loader without delay
+//   //loader.classList.add("loader-hidden");
+//   setTimeout(() => loader.classList.add("loader-hidden"), 1000);
 
-  loader.addEventListener("transitionend", () => {
-    document.body.removeChild("loader");
-  });
-})
+//   loader.addEventListener("transitionend", () => {
+//     document.body.removeChild("loader");
+//   });
+// })
 
 
 // accordion for now serving entry
 const accordion0 = document.getElementsByClassName('entryServed');
 
 for (i = 0; i < accordion0.length; i++){
-  accordion0[i].addEventListener('click', function(){
+  accordion0[i].addEventListener('click',  function(){
     this.classList.toggle('active');
   })
 }
@@ -85,24 +85,27 @@ function parseJSONToHTMLEntry( json ) {
       `<div class = "question">` + 
           `Question: ${ json.question }` +
       `</div>` + 
-    `</div>` +
-  `</div>`;
+    `</div>`;
 
   return elem;
 }
 
 function injectQueue( data ) {
-  var list = document.getElementById( 'list' )
+  var list = document.getElementById( 'list' );
+  var hmtlStr = `<div class = "entry-container">`;
+  // list.innerHTML = `<div class = "entry-container">`;
 
-  var queueStr = "";
   for( var i = 0; i < data.length; i++ ) {
-    queueStr = queueStr.concat( '\n', parseJSONToHTMLEntry( data[ i ] ) );
+    // list.innerHTML += parseJSONToHTMLEntry( data[ i ] );
+    hmtlStr += parseJSONToHTMLEntry( data[ i ] );
   }
   // data.foreach( entry => {
   //   queueStr = queueStr.concat( '\n', parseJSONToHTMLEntry( entry ) );
   // });
+  // list.innerHTML += `<\div>`;
+  hmtlStr += `<\div>`;
 
-  list.innerHTML = queueStr;
+  list.innerHTML = hmtlStr;
 }
 
 function httpGetAsync()
