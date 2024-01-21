@@ -118,7 +118,7 @@ class Queue {
         this.currentQuestion = this.q[0];
         this.currentSids = [ this.q[0].asker.sid ];
         this.q[0].followers.forEach( entry => {
-            this.currentSids.push( entry.sid );
+            this.currentSids.push( Number(entry.sid) );
         });
     }
 
@@ -130,6 +130,7 @@ class Queue {
             // console.log( sid, entry, Number(sid) == entry.asker.sid );
             if (entry.asker.sid === Number( sid ) ) {
                 this.q.splice(index, 1);
+                this.updateCurrentQuestion();
                 console.log( 'Successfully removed the question: ' + entry.question + `of sid ${entry.asker.sid}` );
                 return entry;
             }
@@ -151,6 +152,7 @@ class Queue {
         this.q.forEach( entry => {
             if (entry.asker.sid ===  Number(questionSID)) {
                 entry.followers.push(new Student(studentName, studentSID));
+                this.updateCurrentQuestion();
                 console.log( studentSID + ' successfully added to the question: ' + entry.question );
                 return;
             }
@@ -158,8 +160,8 @@ class Queue {
     }
 
     checkCurrentSids( data ) {
-        // console.log( data.sid )
-        if( data.sid == undefined ) return "";
+        // console.log( data.sids )
+        if( data.sids == undefined ) return "";
         var sids = data.sids.slice( 1, -1 ).split( ',' ).map( c => Number( c.slice( 1, -1 ) ) );
         // console.log( sids )
 
@@ -197,6 +199,7 @@ function start() {
     q.addQuestion(new Entry(new Student("Bowen", 49604481), "What is 1+1?", "Other"));
     q.addQuestion(new Entry(new Student("Bowen1", 496044811), "What is 2+2?", "Other1"));
     q.addQuestion(new Entry(new Student("Bowen2", 496044812), "What is 3+3?", "Other2"));
+    q.addFollowerToQuestion({ sname: 'a', ssid: '1234', qsid: '49604481' })
 
     const app = express();
     const port = 3000;
