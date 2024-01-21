@@ -53,6 +53,7 @@ function getEntry() {
   } else {
     listOfSID = JSON.parse(listOfSID);
     listOfSID.push(inputs.get('sid'));
+    listOfSID =  [...new Set(listOfSID)];
     localStorage.setItem("sid", JSON.stringify(listOfSID));
   }
   

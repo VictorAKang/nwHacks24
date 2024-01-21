@@ -75,7 +75,9 @@ class Queue {
 
     // only add this entry if the student is not present
     addQuestion( entry ) {
-      const studentInQueue = this.q.some(existingEntry =>   existingEntry.asker.sid === entry.asker.sid);
+      const studentInQueue = this.q.some(existingEntry =>   existingEntry.asker.sid === entry.asker.sid || existingEntry.followers.some( 
+        e => e.sid === entry.asker.sid
+      ));
 
       if (!studentInQueue) {
           this.q.push(entry);
@@ -142,9 +144,12 @@ class Queue {
         // }
     }
 
-    addFollowerToQuestion( questionSID, studentSID, studentName ) {
+    addFollowerToQuestion( json ) {
+        var questionSID = json.qsid;
+        var studentSID = json.ssid;
+        var studentName = json.sname;
         this.q.forEach( entry => {
-            if (entry.asker.sid ===  questionSID) {
+            if (entry.asker.sid ===  Number(questionSID)) {
                 entry.followers.push(new Student(studentName, studentSID));
                 console.log( studentSID + ' successfully added to the question: ' + entry.question );
                 return;
@@ -187,67 +192,67 @@ function addEntry( body ) {
 }
 
 function start() {
-  q = new Queue();
+    q = new Queue();
 
-  q.addQuestion(new Entry(new Student("Bowen", 49604481), "What is 1+1?", "Other"));
-  q.addQuestion(new Entry(new Student("Bowen1", 496044811), "What is 2+2?", "Other1"));
-  q.addQuestion(new Entry(new Student("Bowen2", 496044812), "What is 3+3?", "Other2"));
+    q.addQuestion(new Entry(new Student("Bowen", 49604481), "What is 1+1?", "Other"));
+    q.addQuestion(new Entry(new Student("Bowen1", 496044811), "What is 2+2?", "Other1"));
+    q.addQuestion(new Entry(new Student("Bowen2", 496044812), "What is 3+3?", "Other2"));
 
-  const app = express();
-  const port = 3000;
+    const app = express();
+    const port = 3000;
 
-  app.use( express.json() );
-  app.use( cors() );
+    app.use( express.json() );
+    app.use(cors());
 
-  app.post( "/addEntry", function ( req, res ) {
-    console.log( "Got request to add Entry with the following data:" );
-    console.log( req.body );
-    addEntry( req.body );
-    res.send();
-  });
+    app.post( "/addEntry", function ( req, res ) {
+        console.log( "Got request to add Entry with the following data:" );
+        console.log( req.body );
+        addEntry( req.body );
+        res.send();
+    });
 
-  app.get( '/', function(req, res) {
-    console.log('Got get request!');
-    res.send( "hello there!" );
-  });
-  
-  app.get( '/getQueue', function(req, res) {
-    console.log('Recieved a GET call for the queue!');
-    console.log( q.parseToJSON() );
-    res.send( JSON.stringify( { "q":q.parseToJSON() }) );
-  });
+    app.get( '/', function(req, res) {
+        console.log('Got get request!');
+        res.send( "hello there!" );
+    });
+    
+    app.get( '/getQueue', function(req, res) {
+        console.log('Recieved a GET call for the queue!');
+        console.log( q.parseToJSON() );
+        res.send( JSON.stringify( { "q":q.parseToJSON() }) );
+    });
 
-  app.get( '/getCurrentQuestion', function(req, res) {
-    console.log('Received a GET call for the queue current question!');
-    console.log( q.currentQuestion.parseToJSON() );
-    res.send( q.currentQuestion.parseToJSON() );
-  });
+    app.get( '/getCurrentQuestion', function(req, res) {
+        console.log('Received a GET call for the queue current question!');
+        console.log( q.currentQuestion.parseToJSON() );
+        res.send( q.currentQuestion.parseToJSON() );
+    });
 
-  app.post( '/removeQuestionBySID', function(req, res) {
-    console.log( 'Received a POST call to remove a question by SID');
-    console.log( req.body );
-    const removedQuestion = q.removeQuestionBySID( req.body.sid );
-    console.log( q )
-    // console.log( removedQuestion.parseToJSON() );
-    // res.send( removedQuestion.parseToJSON() );
-  });
+    app.post( '/removeQuestionBySID', function(req, res) {
+        console.log( 'Received a POST call to remove a question by SID');
+        console.log( req.body );
+        const removedQuestion = q.removeQuestionBySID( req.body.sid );
+        console.log( q )
+        // console.log( removedQuestion.parseToJSON() );
+        // res.send( removedQuestion.parseToJSON() );
+    });
 
-  app.post( '/addFollowerToQuestion', function(req, res) {
-    console.log( 'Received a POST call to add follower to a question with the data:' );
-    console.log( req.body );
-    q.addFollowerToQuestion( req.body );
-    res.send( "Success!" );
-  });
+    app.post( '/addFollowerToQuestion', function(req, res) {
+        console.log( 'Received a POST call to add follower to a question with the data:' );
+        console.log( req.body );
+        q.addFollowerToQuestion( req.body );
+        res.send( "Success!" );
+    });
 
-  app.post( '/getCurrentSids', function( req, res ) {
-    console.log( 'Recieved a POST call to check currentSids' );
-    console.log( req.body )
-    res.send( q.checkCurrentSids( req.body ) );
-  });
+    app.post( '/getCurrentSids', function( req, res ) {
+        console.log( 'Recieved a POST call to check currentSids' );
+        console.log( req.body )
+        res.send( q.checkCurrentSids( req.body ) );
+    });
 
-  app.listen(port, function () {
-    console.log(`Example app listening on port ${port}!`);
-  });
+    app.listen(port, function () {
+        console.log(`Example app listening on port ${port}!`);
+    });
 }
 
 start();

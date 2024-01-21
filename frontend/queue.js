@@ -97,13 +97,14 @@ function parseQueueToJSON( qString ) {
 }
 
 function setFollowButton( sid ) {
-  return;
+  localStorage.setItem("qsid", sid );
+  window.location.href = 'addfollower.html';
 }
 
 function parseJSONToHTMLEntry( json, entryType, sid ) {
   var elem = `<div class = ${entryType}>` +
     `<div class = "info">` +
-      `<p> ${ json.asker.name }  |   ${ json.category }` +
+      `<p> ${ json.asker.name }  |   ${ json.category } | ${json.followers.split("¥").length-1 } followers` +
       `<span class="plus">` +
       `<span id=${json.asker.sid} class="trash fa fa-trash" onClick="setTrashButton( this.id )"></span>` +
       // `<span id="trash" class="trash fa fa-trash"></span>` +
@@ -190,6 +191,7 @@ function httpGetAsync( callback )
     xmlHttp.send(null);
 }
 
+httpGetAsync( () => {return});
 // function update() {
 //   setTimeout( () => {
 //     console.log( "updating ..." );
