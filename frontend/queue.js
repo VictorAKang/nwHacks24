@@ -12,9 +12,6 @@ window.addEventListener("load", () => {
 })
 
 
-
-
-
 // accordion for now serving entry
 const accordion0 = document.getElementsByClassName('entryServed');
 
@@ -113,7 +110,6 @@ function httpGetAsync()
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() { 
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-            // console.log(xmlHttp.responseText);
             var out = parseQueueToJSON(xmlHttp.responseText);
             console.log( out );
             injectQueue( out );
@@ -122,4 +118,4 @@ function httpGetAsync()
     xmlHttp.open("GET", url, true); // true for asynchronous 
     xmlHttp.send(null);
 }
-httpGetAsync()
+httpGetAsync();
