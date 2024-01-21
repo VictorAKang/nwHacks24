@@ -302,6 +302,13 @@ label {
   float: right;
 }
 
+.trash {
+  z-index: 12;
+}
+.trash:hover {
+  transition: ease-in 0.2s;
+  transform: scale(1.2);
+}
 .entry .entryServed p {
   padding: 0 0.5rem;
 }

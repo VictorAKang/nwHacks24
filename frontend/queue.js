@@ -13,13 +13,13 @@
 
 
 // accordion for now serving entry
-const accordion0 = document.getElementsByClassName('entryServed');
+// const accordion0 = document.getElementsByClassName('entryServed');
 
-for (i = 0; i < accordion0.length; i++){
-  accordion0[i].addEventListener('click',  function(){
-    this.classList.toggle('active');
-  })
-}
+// for (i = 0; i < accordion0.length; i++){
+//   accordion0[i].addEventListener('click',  function(){
+//     this.classList.toggle('active');
+//   })
+// }
 
 
 // accordion for other entry
@@ -30,6 +30,15 @@ for (i = 0; i < accordion0.length; i++){
 //     this.classList.toggle('active');
 //   })
 // }
+
+
+const trash = document.getElementsByClassName('trash');
+for (i = 0; i < trash.length; i++){
+    trash[i].addEventListener('click', function(){
+    alert("Noodles gone RIP");
+      // TODO: replace this with deleting the entry
+  })
+}
 
 url = "http://localhost:3000/getQueue"
 
@@ -79,7 +88,9 @@ function parseJSONToHTMLEntry( json, entryType ) {
   var elem = `<div class = ${entryType}>` +
     `<div class = "info">` +
       `<p> ${ json.asker.name }  |   ${ json.category }` +
-      `<span class="plus">+</span>` +
+      `<span class="plus">` +
+      `<span id="trash" class="trash fa fa-trash"></span>` +
+      `+</span>` +
       `</p>` + 
     `</div>` +
       `<div class = "question">` + 
@@ -97,6 +108,30 @@ function setAccordian( className ) {
     accordion1[i].addEventListener('click', function(){
       this.classList.toggle('active');
     })
+  }
+}
+
+function setTrashButton( sid ) {
+  // alert( sid )
+  var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+  xmlhttp.onreadystatechange = function() { 
+    if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
+      alert( `Question ${sid} Successfuly deleted!`)
+    }
+  };
+  xmlhttp.open("POST", "http://localhost:3000/removeQuestionBySID");
+  xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  xmlhttp.send( JSON.stringify( { "sid":sid } ) );
+}
+
+function setButton( data ) {
+  const trash = document.getElementsByClassName('trash');
+  for (i = 0; i < data.length; i++){
+    // trash[i].addEventListener('click', setTrashButton( data[ i ].asker.sid ) );
+    trash[i].addEventListener('click', function ()  {
+      // setTrashButton( 5);
+      setTrashButton( data[ i ].asker.sid );
+    } );
   }
 }
 
@@ -118,22 +153,48 @@ function injectQueue( data ) {
   hmtlStr += `<\div>`;
 
   list.innerHTML = hmtlStr;
+  setButton( data );
 
   setAccordian( "entry" );
   setAccordian( "entryServed" );
 }
 
+// var idling = true;
+
 function httpGetAsync()
-{
+{ 
+  // idling = false;
+  setTimeout( 10000)
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() { 
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
             var out = parseQueueToJSON(xmlHttp.responseText);
             console.log( out );
             injectQueue( out );
+            update();
+            // idling = true;
         }
     }
     xmlHttp.open("GET", url, true); // true for asynchronous 
     xmlHttp.send(null);
 }
-httpGetAsync();
+
+function update() {
+  // while( 1 ) {
+  //   if( idling )
+  //     setTimeout( () => {
+  //       console.log( "updating...");
+  //       // httpGetAsync();
+  //     }, 10000 );
+  // }
+  setTimeout( () => {
+    console.log( "updating ..." );
+    httpGetAsync();
+  }, 5000);
+}
+
+update()
+
+// setTimeout(() => {
+//   httpGetAsync();
+// }, 5000);

@@ -10,6 +10,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Jost&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="
+  https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css
+  ">
 </head>
 <header>
   <div class="logo">
@@ -56,7 +59,10 @@
       <div class = "entryServed">
         <div class = "info"> 
           <p>NOW SERVING: Mary Jane  |   lecture 
-          <span class="plus">+</span>
+            <span class="plus">
+              <span id="trash" class="trash fa fa-trash"></span>
+              +
+            </span>
           </p>
         </div>
           <div class = "question">
@@ -66,7 +72,10 @@
     <div class = "entry">
       <div class = "info"> 
         <p>John Doe  |   exam 
-        <span class="plus">+</span>
+          <span class="plus">
+            <span id="trash" class="trash fa fa-trash"></span>
+            +
+          </span>
         </p>
       </div>
         <div class = "question">
@@ -80,6 +89,10 @@
   </div>
   <script src="queue.js"></script>
   <script src="script.js"></script>
+  <!-- <script>
+    localStorage.setItem("sid", '["49604481","1"]' )
+  </script> -->
+  <script src="notification.js"></script>
   <!-- <script src="test.js"></script> -->
 </body>
 

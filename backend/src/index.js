@@ -70,6 +70,7 @@ class Queue {
     constructor() {
         this.q = [];
         this.currentQuestion = null;
+        this.currentSids = [];
     }
 
     // only add this entry if the student is not present
@@ -95,14 +96,6 @@ class Queue {
     }
     
     parseToJSON() {
-        // var returnArray = [];
-        // this.q.forEach(entry => {
-        //   console.log(entry);
-        //   console.log(entry.parseToJSON());
-        //   returnArray.push(JSON.stringify(entry.parseToJSON()));
-        // });
-        // return returnArray;
-
         var outStr = "";
         
         this.q.forEach( entry => {
@@ -116,13 +109,21 @@ class Queue {
     updateCurrentQuestion() {
         if (this.q.length === 0) {
             this.currentQuestion = null;
+            this.currentSids = [];
+            return;
         }
         this.currentQuestion = this.q[0];
+        this.currentSids = [ this.q[0].asker.sid ];
+        this.q[0].followers.forEach( entry => {
+            this.currentSids.push( entry.sid );
+        });
     }
 
     removeQuestionBySID( sid ) {
+        // console.log(sid)
         let index = 0;
         this.q.forEach( entry => {
+            console.log( sid, entry, sid == entry );
             if (entry.asker.sid === sid) {
                 this.q.splice(index, 1);
                 console.log( 'Successfully removed the question: ' + entry.question );
@@ -130,6 +131,13 @@ class Queue {
             }
             index++;
         });
+        // for( var i=this.q.length-1; i >= 0 ; i-- ) {
+        //     var entry = this.q[ i ];
+        //     if( entry.asker.sid === sid ) {
+        //         this.q.splice( index, 1 );
+        //         console.log( `Successfully removed the question ${entry.question}` );
+        //     }
+        // }
     }
 
     addFollowerToQuestion( questionSID, studentSID, studentName ) {
@@ -140,6 +148,28 @@ class Queue {
                 return;
             }
         });
+    }
+
+    checkCurrentSids( data ) {
+        var sids = data.sids.slice( 1, -1 ).split( ',' ).map( c => Number( c.slice( 1, -1 ) ) );
+        // console.log( sids )
+
+        var retStr = "";
+
+        console.log(this.currentSids)
+        console.log(sids)
+        // console.log( sids[0] === this.currentSids[0])
+        sids.forEach( entry => {
+            if( this.currentSids.some( c => c === entry ) ){ 
+                retStr += ' ' + entry;
+                // console.log('a')
+            }
+        });
+
+        console.log( retStr );
+
+        return retStr;
+        // return sids.some( ( sid ) => sid in this.currentSids );
     }
 }
 
@@ -191,9 +221,11 @@ function start() {
 
   app.post( '/removeQuestionBySID', function(req, res) {
     console.log( 'Received a POST call to remove a question by SID');
-    const removedQuestion = q.removeQuestionBySID();
-    console.log( removedQuestion.parseToJSON() );
-    res.send( removedQuestion.parseToJSON() );
+    console.log( req.body );
+    const removedQuestion = q.removeQuestionBySID( req.body.sid );
+    console.log( q )
+    // console.log( removedQuestion.parseToJSON() );
+    // res.send( removedQuestion.parseToJSON() );
   });
 
   app.post( '/addFollowerToQuestion', function(req, res) {
@@ -201,6 +233,12 @@ function start() {
     console.log( req.body );
     q.addFollowerToQuestion( req.body );
     res.send( "Success!" );
+  });
+
+  app.post( '/getCurrentSids', function( req, res ) {
+    console.log( 'Recieved a POST call to check currentSids' );
+    console.log( req.body )
+    res.send( q.checkCurrentSids( req.body ) );
   });
 
   app.listen(port, function () {
