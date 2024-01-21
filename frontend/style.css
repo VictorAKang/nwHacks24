@@ -13,14 +13,12 @@ header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /*center contents*/
   justify-content: center;
   top: 0;
   position: absolute;
 }
 
 body {
-  /* background-color: papayawhip;*/
   color: grey;
   font-family: 'Jost', sans-serif;
   height: 100%;
@@ -42,7 +40,7 @@ header {
 }
 
 .questionForm {
-  width: 55%;
+  width: 50%;
 }
 
 .input-group,
@@ -120,9 +118,8 @@ button:hover {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  
 }
-
-
 
 .entry-container .entry .info {
   /* Adjust these styles as needed */
@@ -141,7 +138,6 @@ button:hover {
   color: darkblue;
   list-style-type: none;
   justify-content: center;
-  
 }
 
 
@@ -151,13 +147,10 @@ button:hover {
   border: 3px solid darkblue;
   background-color: darkblue;
   color: white;
-
-
-  
   cursor: pointer;
 }
 
-.entry-container .entry .question {
+.question {
   /* Adjust these styles as needed */
   position: relative;
   width: 800px;
@@ -172,7 +165,7 @@ button:hover {
   overflow-y: auto;
 }
 
-.entry-container .entry.active .question {
+.entry.active .question {
   /* Adjust these styles as needed */
   height: 6rem;
   padding: 10px;
@@ -181,7 +174,7 @@ button:hover {
 }
 
 
-.entry-container .entryServed .info {
+.entryServed .info {
   /* Adjust these styles as needed */
   position: relative;
   width: 800px;
@@ -190,39 +183,32 @@ button:hover {
   margin: 10px;
   border-radius: 1rem;
   border: 3px solid forestgreen;
-
+  background-color: #dbffdb;
 
   display: flex;
   flex-direction: column;
   font-size: 20px;
+  color: forestgreen;
+  
   list-style-type: none;
   justify-content: center;
-  cursor: pointer;
+
 }
 
 
-.entry-container .entryServed .info:hover {
+.entryServed .info:hover {
   /* Adjust these styles as needed */
-  position: relative;
-  width: 800px;
-  height: 20px;
-  padding: 10px;
-  margin: 10px;
-  border-radius: 1rem;
-  border: 2px solid forestgreen;
+
+  border: 3px solid forestgreen;
   background-color: forestgreen;
   color: white;
 
 
-  display: flex;
-  flex-direction: column;
-  font-size: 20px;
-  list-style-type: none;
-  justify-content: center;
+
   cursor: pointer;
 }
 
-.entry-container .entryServed .question {
+.entryServed .question {
   /* Adjust these styles as needed */
   position: relative;
   width: 800px;
@@ -237,18 +223,20 @@ button:hover {
   overflow-y: auto;
 }
 
-.entry-container .entryServed.active .question {
+.entryServed.active .question {
   /* Adjust these styles as needed */
-  height: 150px;
+  height: 6rem;
   padding: 10px;
+  padding-block-end: 5px;
   background-color: #e3e3e3;
 }
 
 
 
 
+/*
 .entryServed {
-  /* Adjust these styles as needed */
+   
   width: 800px;
   padding: 10px;
   margin: 5px;
@@ -263,9 +251,14 @@ button:hover {
   list-style-type: none;
   justify-content: center;
 }
+*/
 
+.logo a {
+  color: white;
+  text-decoration: none;
+}
 
-a {
+.directory {
   background-color: white;
   color: darkblue;
   border: 2px solid darkblue;
@@ -274,7 +267,7 @@ a {
   border-radius: 5px;
 }
 
-a:hover {
+.directory:hover {
   background-color: darkblue;
   color: white;
 }
@@ -288,7 +281,7 @@ label {
   float: right;
 }
 
-.entry p {
+.entry .entryServed p {
   padding: 0 0.5rem;
 }
 

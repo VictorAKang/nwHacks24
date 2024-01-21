@@ -62,4 +62,21 @@ function getEntry() {
 
 const formSubmitButton = document.getElementById( 'submitQuestion' );
 // formSubmitButton.addEventListener( 'submit', getEntry );
-formSubmitButton.addEventListener( "click", getEntry);
+if (formSubmitButton) {
+  formSubmitButton.addEventListener( "click", getEntry);
+}
+
+
+
+//Loader animation code
+window.addEventListener("load", () => {
+  const loader = document.querySelector(".loader");
+
+  //loader without delay
+  //loader.classList.add("loader-hidden");
+  setTimeout(() => loader.classList.add("loader-hidden"), 1000);
+
+  loader.addEventListener("transitionend", () => {
+    document.body.removeChild("loader");
+  });
+})
