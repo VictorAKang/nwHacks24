@@ -33,23 +33,6 @@ class Entry {
     flipReadyToTalk() {
         this.readyToTalk = !this.readyToTalk;
     }
-
-  parseToJSON() {
-    const entryObject = {
-      readyToTalk: this.readyToTalk,
-      asker: {
-        name: this.asker.name,
-        sid: this.asker.sid
-      },
-      question: this.question,
-      category: this.category,
-      followers: this.followers.map(follower => ({
-        name: follower.name,
-        sid: follower.sid
-      }))
-    };
-    return JSON.stringify(entryObject);
-  }
 }
 
 class Queue {
@@ -79,13 +62,16 @@ class Queue {
       console.log(`${entry.asker.name}'s question closed.`);
       this.q.remove( entry );
     }
-
-  parseToJSON() {
-    
-  }
 }
 
 var q;
+
+function addEntry( body ) {
+    // var j = JSON.parse( body );
+    var s = new Student( body.name, body.sid );
+    var e = new Entry( s, body.question, body.category );
+    q.addQuestion( e );
+}
 
 function start() {
   q = new Queue();
@@ -97,7 +83,9 @@ function start() {
   app.use( cors() );
 
   app.post( "/addEntry", function ( req, res ) {
+    console.log( "Got request to add Entry with the following data:" );
     console.log( req.body );
+    addEntry( req.body );
   });
 
   app.get( '/', function(req, res) {
@@ -105,9 +93,9 @@ function start() {
     res.send( "hello there!" );
   });
 
-  app.listen(port, '0.0.0.0', function () {
+  app.listen(port, function () {
     console.log(`Example app listening on port ${port}!`);
   });
 }
 
-start()
+start();
