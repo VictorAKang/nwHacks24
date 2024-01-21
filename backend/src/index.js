@@ -69,6 +69,7 @@ class Entry {
 class Queue {
     constructor() {
         this.q = [];
+        this.currentQuestion = null;
     }
 
     // only add this entry if the student is not present
@@ -81,9 +82,7 @@ class Queue {
       } else {
           console.log(`${entry.asker.name}'s question not added to the queue. Student is already in the queue.`);
       }
-
-      
-        //this.q.push( entry );
+      this.updateCurrentQuestion();
     }
 
     //assume that entry is someone who is readytotalk
@@ -92,6 +91,7 @@ class Queue {
     closeQuestion( entry ){
       console.log(`${entry.asker.name}'s question closed.`);
       this.q.remove( entry );
+      this.updateCurrentQuestion();
     }
     
     parseToJSON() {
@@ -111,6 +111,13 @@ class Queue {
         });
 
         return outStr.slice(1);
+    }
+
+    updateCurrentQuestion() {
+        if (this.q.length === 0) {
+            this.currentQuestion = null;
+        }
+        this.currentQuestion = this.q[0];
     }
 }
 
@@ -152,6 +159,12 @@ function start() {
     console.log( q.parseToJSON() );
     res.send( q.parseToJSON() );
   });
+
+  app.get( '/getCurrentQuestion', function(req, res) {
+    console.log('Received a GET call for the queue current question!');
+    console.log( q.currentQuestion.parseToJSON() );
+    res.send( q.currentQuestion.parseToJSON() );
+  })
 
   app.listen(port, function () {
     console.log(`Example app listening on port ${port}!`);
