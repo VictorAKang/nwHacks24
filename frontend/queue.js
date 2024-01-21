@@ -98,7 +98,7 @@ function parseQueueToJSON( qString ) {
 
 function setFollowButton( sid ) {
   localStorage.setItem("qsid", sid );
-  window.location.href = 'addfollower.html';
+  window.location.href = 'followquestion.html';
 }
 
 function parseJSONToHTMLEntry( json, entryType, sid ) {
@@ -106,8 +106,10 @@ function parseJSONToHTMLEntry( json, entryType, sid ) {
     `<div class = "info">` +
       `<p> ${ json.asker.name }  |   ${ json.category } | ${json.followers.split("¥").length-1 } followers` +
       `<span class="plus">` +
-      `<span id=${json.asker.sid} class="trash fa fa-trash" onClick="setTrashButton( this.id )"></span>` +
+      `<span class="trash fa fa-trash" onClick="setTrashButton( ${JSON.stringify(json)} )"></span>` +
+      // `<span id=${JSON.stringify(json)} class="trash fa fa-trash" onClick="setTrashButton( this.id )"></span>` +
       // `<span id="trash" class="trash fa fa-trash"></span>` +
+      // `<span id="${JSON.stringify(json)}" class="follow fa fa-user-plus" onClick="setFollowButton( this.id )"></span>` +
       `<span id="${json.asker.sid}" class="follow fa fa-user-plus" onClick="setFollowButton( this.id )"></span>` +
       `+</span>` +
       `</p>` + 

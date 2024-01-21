@@ -238,7 +238,63 @@ button:hover {
 }
 
 
+.previewEntry {
+  width: 800px;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 1rem;
+  border: 3px solid darkblue;
+  background-color: rgba(0, 0, 139, 0.08);
 
+  display: flex;
+  flex-direction: column;
+  font-size: 25px;
+  color: darkblue;
+
+  list-style-type: none;
+  justify-content: center;
+}
+
+.previewQuestion {
+  width: 760px;
+  height: 7.5rem;
+  padding: 10px;
+  padding-block-end: 5px;
+  background-color: rgba(0, 0,139, 0.08);
+  color: darkblue;
+  position: relative;
+  margin: 10px;
+  border-radius: 1rem;
+  font-size: 20px;
+  overflow: hidden;
+  transition: 0.5s;
+  overflow-y: auto;
+}
+
+
+.confirm {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.confirm a {
+  margin: 5px;
+  border-radius: 1rem;
+  background-color: white;
+  color: darkblue;
+  border: 3px solid darkblue;
+  text-decoration: none;
+  padding: 10px 20px;
+  font-size: 22px;
+}
+.confirm a:hover {
+  background-color: darkblue;
+  color: white;
+  transition: ease-out 0.2s;
+  cursor: pointer;
+}
 
 /*
 .entryServed {
