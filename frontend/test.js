@@ -1,17 +1,17 @@
 url = "http://localhost:3000/addEntry"
 
-// function httpGetAsync()
-// {
-//     var xmlHttp = new XMLHttpRequest();
-//     xmlHttp.onreadystatechange = function() { 
-//         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-//             console.log(xmlHttp.responseText);
-//     }
-//     xmlHttp.open("GET", url, true); // true for asynchronous 
-//     xmlHttp.send(null);
-// }
+function httpGetAsync()
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            console.log(xmlHttp.responseText);
+    }
+    xmlHttp.open("GET", url, true); // true for asynchronous 
+    xmlHttp.send(null);
+}
 
-// httpGetAsync();
+httpGetAsync();
 
 function f() {
     var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 

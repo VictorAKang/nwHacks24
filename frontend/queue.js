@@ -78,6 +78,36 @@ function parseQueueToJSON( qString ) {
     return jsonEntries;
 }
 
+function parseJSONToHTMLEntry( json ) {
+  var elem = `<div class = "entry">` +
+    `<div class = "info">` +
+      `<p> ${ json.asker.name }  |   ${ json.category }` +
+      `<span class="plus">+</span>` +
+      `</p>` + 
+    `</div>` +
+      `<div class = "question">` + 
+          `Question: ${ json.question }` +
+      `</div>` + 
+    `</div>` +
+  `</div>`;
+
+  return elem;
+}
+
+function injectQueue( data ) {
+  var list = document.getElementById( 'list' )
+
+  var queueStr = "";
+  for( var i = 0; i < data.length; i++ ) {
+    queueStr = queueStr.concat( '\n', parseJSONToHTMLEntry( data[ i ] ) );
+  }
+  // data.foreach( entry => {
+  //   queueStr = queueStr.concat( '\n', parseJSONToHTMLEntry( entry ) );
+  // });
+
+  list.innerHTML = queueStr;
+}
+
 function httpGetAsync()
 {
     var xmlHttp = new XMLHttpRequest();
@@ -86,6 +116,7 @@ function httpGetAsync()
             // console.log(xmlHttp.responseText);
             var out = parseQueueToJSON(xmlHttp.responseText);
             console.log( out );
+            injectQueue( out );
         }
     }
     xmlHttp.open("GET", url, true); // true for asynchronous 

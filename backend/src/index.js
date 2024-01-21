@@ -140,6 +140,7 @@ function start() {
     console.log( "Got request to add Entry with the following data:" );
     console.log( req.body );
     addEntry( req.body );
+    res.send();
   });
 
   app.get( '/', function(req, res) {
