@@ -128,7 +128,7 @@ class Queue {
         let index = 0;
         this.q.forEach( entry => {
             // console.log( sid, entry, Number(sid) == entry.asker.sid );
-            if (entry.asker.sid === Number( sid ) ) {
+            if (Number(entry.asker.sid) === Number( sid ) ) {
                 this.q.splice(index, 1);
                 this.updateCurrentQuestion();
                 console.log( 'Successfully removed the question: ' + entry.question + `of sid ${entry.asker.sid}` );
