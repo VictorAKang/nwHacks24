@@ -1,0 +1,47 @@
+url = "http://localhost:3000/addEntry";
+
+function follow() {
+  // form is the form of adding a new question
+  const form = document.getElementById( 'questionForm' );
+  const inputs = new FormData( form );
+
+  if (inputs.get( 'name' ) == ""){
+    alert("Please enter a name.");
+    return;
+  }
+
+
+  if (inputs.get( 'sid' ) == ""){
+    alert("Please enter a valid student number.");
+    return;
+  }
+
+  const studentId = parseInt(inputs.get( 'sid' ) );
+  if (isNaN(studentId)) {
+      alert("Invalid student ID. Please enter a valid number.");
+      return;
+  }
+
+  
+
+  var obj =  {
+    "name": inputs.get( 'name' ),
+    "sid": inputs.get( 'sid'),
+  };
+  
+  console.log( "sending POST request with the following data (student):" );
+  console.log( obj );
+  var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+  xmlHttp.onreadystatechange = function() {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      alert( "Student is following!" );
+      window.location.href = 'queue.html';
+    }
+  }
+  xmlhttp.open( "POST", url );
+  xmlhttp.setRequestHeader( "Content-Type", "application/json;charset=UTF-8" );
+  xmlhttp.send( JSON.stringify( obj ) );
+}
+
+const formSubmitButton = document.getElementById( 'submitQuestion' );
+formSubmitButton.addEventListener( "follow", follow);

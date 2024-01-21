@@ -23,7 +23,7 @@ function callbackNotif( data ) {
     }
 }
 
-function checkNotif() {
+function checkNotif( callback ) {
     var sids = localStorage.getItem( "sid" );
     // console.log( sids.toString())
     if( sids == null )
@@ -34,7 +34,7 @@ function checkNotif() {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
             console.log(xmlHttp.responseText);
             callbackNotif( xmlHttp.responseText );   
-            update();
+            callback();
         }
 
     }
@@ -47,7 +47,7 @@ function checkNotif() {
 function update() {
     setTimeout( () => {
         console.log( 'checking for notif' );
-        checkNotif();
+        checkNotif( () => update() );
     }, 10000 );
 }
 

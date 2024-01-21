@@ -309,6 +309,23 @@ label {
   transition: ease-in 0.2s;
   transform: scale(1.2);
 }
+
+.follow {
+  z-index: 12;
+}
+.follow:hover {
+  transition: ease-in 0.2s;
+  transform: scale(1.2);
+}
+
+.github {
+
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+  z-index: 12;
+}
+
 .entry .entryServed p {
   padding: 0 0.5rem;
 }

@@ -58,8 +58,9 @@
       </div> -->
       <div class = "entryServed">
         <div class = "info"> 
-          <p>NOW SERVING: Mary Jane  |   lecture 
+          <p>NOW SERVING: Mary Jane  |   lecture | 1 followers
             <span class="plus">
+              <span id="follow" class="follow fa fa-user-plus"></span>
               <span id="trash" class="trash fa fa-trash"></span>
               +
             </span>
@@ -71,8 +72,9 @@
       </div>
     <div class = "entry">
       <div class = "info"> 
-        <p>John Doe  |   exam 
+        <p>John Doe  |   exam | 1 followers
           <span class="plus">
+            <span id="follow" class="follow fa fa-user-plus"></span>
             <span id="trash" class="trash fa fa-trash"></span>
             +
           </span>
@@ -93,6 +95,17 @@
     localStorage.setItem("sid", '["49604481","1"]' )
   </script> -->
   <script src="notification.js"></script>
+  <script>
+    function update() {
+      setTimeout( () => {
+        console.log( "updating ..." );
+        httpGetAsync( () => setTimeout( () => {
+          console.log( "checking for notifs ..." );
+          checkNotif( () => update() );
+      }, 2500) );
+    }, 2500);
+    }
+  </script>
   <!-- <script src="test.js"></script> -->
 </body>
 

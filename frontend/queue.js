@@ -32,13 +32,22 @@
 // }
 
 
-const trash = document.getElementsByClassName('trash');
-for (i = 0; i < trash.length; i++){
-    trash[i].addEventListener('click', function(){
-    alert("Noodles gone RIP");
-      // TODO: replace this with deleting the entry
-  })
-}
+// const trash = document.getElementsByClassName('trash');
+// for (i = 0; i < trash.length; i++){
+//     trash[i].addEventListener('click', function(){
+//     alert("Noodles gone RIP");
+//       // TODO: replace this with deleting the entry
+//   })
+// }
+
+// const follow = document.getElementsByClassName('follow');
+// for (i = 0; i < follow.length; i++){
+//       follow[i].addEventListener('click', function(){
+//     alert("Following energy drinks");
+//          window.location.href = 'addfollower.html';
+//       // TODO: replace this with adding followers to the question
+//   })
+// }
 
 url = "http://localhost:3000/getQueue"
 
@@ -87,6 +96,10 @@ function parseQueueToJSON( qString ) {
   return jsonEntries;
 }
 
+function setFollowButton( sid ) {
+  return;
+}
+
 function parseJSONToHTMLEntry( json, entryType, sid ) {
   var elem = `<div class = ${entryType}>` +
     `<div class = "info">` +
@@ -94,6 +107,7 @@ function parseJSONToHTMLEntry( json, entryType, sid ) {
       `<span class="plus">` +
       `<span id=${json.asker.sid} class="trash fa fa-trash" onClick="setTrashButton( this.id )"></span>` +
       // `<span id="trash" class="trash fa fa-trash"></span>` +
+      `<span id="${json.asker.sid}" class="follow fa fa-user-plus" onClick="setFollowButton( this.id )"></span>` +
       `+</span>` +
       `</p>` + 
     `</div>` +
@@ -176,11 +190,11 @@ function httpGetAsync( callback )
     xmlHttp.send(null);
 }
 
-function update() {
-  setTimeout( () => {
-    console.log( "updating ..." );
-    httpGetAsync( () => update() );
-  }, 5000);
-}
+// function update() {
+//   setTimeout( () => {
+//     console.log( "updating ..." );
+//     httpGetAsync( () => update() );
+//   }, 5000);
+// }
 
-update()
+// update()

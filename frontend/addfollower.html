@@ -1,0 +1,49 @@
+2<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>EduQueue</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jost&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="
+  https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css
+  ">
+</head>
+<header>
+  <div class="logo">
+    <h2><a href="index.html">EduQueue</a></h2>
+    <a href="https://github.com/VictorAKang/nwHacks24"> <i class="github fa fa-github fa-2x"></i></a>
+  </div>
+</header>
+
+<body>
+  <form id="questionForm" class="questionForm">
+    <h2>Add a new follower</h2>
+    <div class="input-group">
+      <label for="name">Name</label>
+      <input class="text-input" id="name" type="text" id="name" name="name">
+    </div>
+
+    <div class="input-group">
+      <label for="sid">Student ID</label>
+      <input class="text-input" id="sid" type="text" id="sid" name="sid" placeholder="e.g. 12345678">
+    </div>
+
+    
+    <button id="submitQuestion" class="fade" type="button" onclick="follow()">Follow</button>
+
+    <a href="queue.html" class="backButton">Back</a>
+  </form>
+  
+  <div class="loader">
+    <h1>EduQueue</h1>
+  </div>
+  <script src="addfollower.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
