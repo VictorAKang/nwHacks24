@@ -23,13 +23,13 @@ for (i = 0; i < accordion0.length; i++){
 
 
 // accordion for other entry
-const accordion1 = document.getElementsByClassName('entry');
+// const accordion1 = document.getElementsByClassName('entry');
 
-for (i = 0; i < accordion1.length; i++){
-  accordion1[i].addEventListener('click', function(){
-    this.classList.toggle('active');
-  })
-}
+// for (i = 0; i < accordion1.length; i++){
+//   accordion1[i].addEventListener('click', function(){
+//     this.classList.toggle('active');
+//   })
+// }
 
 url = "http://localhost:3000/getQueue"
 
@@ -75,8 +75,8 @@ function parseQueueToJSON( qString ) {
     return jsonEntries;
 }
 
-function parseJSONToHTMLEntry( json ) {
-  var elem = `<div class = "entry">` +
+function parseJSONToHTMLEntry( json, entryType ) {
+  var elem = `<div class = ${entryType}>` +
     `<div class = "info">` +
       `<p> ${ json.asker.name }  |   ${ json.category }` +
       `<span class="plus">+</span>` +
@@ -90,6 +90,16 @@ function parseJSONToHTMLEntry( json ) {
   return elem;
 }
 
+function setAccordian( className ) {
+  const accordion1 = document.getElementsByClassName( className );
+
+  for (i = 0; i < accordion1.length; i++){
+    accordion1[i].addEventListener('click', function(){
+      this.classList.toggle('active');
+    })
+  }
+}
+
 function injectQueue( data ) {
   var list = document.getElementById( 'list' );
   var hmtlStr = `<div class = "entry-container">`;
@@ -97,7 +107,9 @@ function injectQueue( data ) {
 
   for( var i = 0; i < data.length; i++ ) {
     // list.innerHTML += parseJSONToHTMLEntry( data[ i ] );
-    hmtlStr += parseJSONToHTMLEntry( data[ i ] );
+    if( i == 0 ) var entryType = "entryServed";
+    else var entryType = "entry";
+    hmtlStr += parseJSONToHTMLEntry( data[ i ], entryType );
   }
   // data.foreach( entry => {
   //   queueStr = queueStr.concat( '\n', parseJSONToHTMLEntry( entry ) );
@@ -106,6 +118,9 @@ function injectQueue( data ) {
   hmtlStr += `<\div>`;
 
   list.innerHTML = hmtlStr;
+
+  setAccordian( "entry" );
+  setAccordian( "entryServed" );
 }
 
 function httpGetAsync()
