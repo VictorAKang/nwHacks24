@@ -76,6 +76,8 @@ function parseEntryToJSON(entryString) {
 }
 
 function parseQueueToJSON( qString ) {
+  // console.log(JSON.parse(qString).q)
+  qString = JSON.parse( qString ).q;
   if( qString == "" || qString == undefined) return "";
   const entries = qString.split('€');
 
@@ -163,8 +165,8 @@ function httpGetAsync( callback )
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() { 
       if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-        // console.log( xmlHttp.responseText=="")
-        var out = parseQueueToJSON(xmlHttp.responseText.q);
+        // console.log( xmlHttp.responseText)
+        var out = parseQueueToJSON(xmlHttp.responseText);
         console.log( out );
         injectQueue( out );
         callback();
