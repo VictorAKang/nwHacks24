@@ -68,7 +68,7 @@ class Queue {
           console.log(`${entry.asker.name}'s question not added to the queue. Student is already in the queue.`);
       }
 
-      
+
         //this.q.push( entry );
     }
 
@@ -80,15 +80,25 @@ class Queue {
       this.q.remove( entry );
     }
 
-  parseToJSON() {
-    
-  }
+    parseToJSON() {
+      var returnArray = [];
+      this.q.forEach(entry => {
+        console.log(entry);
+        console.log(entry.parseToJSON());
+        returnArray.push(JSON.stringify(entry.parseToJSON()));
+      });
+      return returnArray;
+    }
 }
 
 var q;
 
 function start() {
   q = new Queue();
+
+  q.addQuestion(new Entry(new Student("Bowen", 49604481), "What is 1+1?", "Other"));
+  q.addQuestion(new Entry(new Student("Bowen1", 496044811), "What is 2+2?", "Other1"));
+  q.addQuestion(new Entry(new Student("Bowen2", 496044812), "What is 3+3?", "Other2"));
 
   const app = express();
   const port = 3000;
@@ -105,7 +115,13 @@ function start() {
     res.send( "hello there!" );
   });
 
-  app.listen(port, '0.0.0.0', function () {
+  app.get( '/getQueue', function(req, res) {
+    console.log('Added an entry into the queue!');
+    console.log( q.parseToJSON() );
+    res.send( (q.parseToJSON().toString()) );
+  })
+
+  app.listen(port, function () {
     console.log(`Example app listening on port ${port}!`);
   });
 }
