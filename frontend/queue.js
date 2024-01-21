@@ -51,18 +51,26 @@ function parseEntryToJSON(entryString) {
 
     const entryValues = entryString.split(',');
 
+    var followers = []
+
+    entryValues[4].trim().split( '¥' ).foreach( entry=> {
+      followers.push( parsePersonToJSON( entry ) );
+    });
+
     const jsonEntry = {
         readyToTalk: entryValues[0].trim(),
-        asker: parsePersonToJSON(entryValues.slice(1, 2).join(',')),
+        // asker: parsePersonToJSON(entryValues.slice(1, 2).join(',')),
+        asker: entryValues[1].trim(),
         question: entryValues[2].trim(),
         category: entryValues[3].trim(),
-        followers: entryValues[4].trim(),
+        // followers: entryValues[4].trim(),
+        followers: followers
     };
     return jsonEntry;
 }
 
 function parseQueueToJSON( qString ) {
-    const entries = qString.split(',');
+    const entries = qString.split('€');
 
     const jsonEntries = entries.map(entry => {
         return JSON.parse( entry );
@@ -76,8 +84,8 @@ function httpGetAsync()
     xmlHttp.onreadystatechange = function() { 
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
             // console.log(xmlHttp.responseText);
-            var test = parseQueueToJSON(xmlHttp.responseText);
-            console.log( test );
+            var out = parseQueueToJSON(xmlHttp.responseText);
+            console.log( out );
         }
     }
     xmlHttp.open("GET", url, true); // true for asynchronous 

@@ -35,20 +35,34 @@ class Entry {
     }
     
     parseToJSON() {
+        var followersStr = "";
+
+        this.followers.forEach( entry=> {
+            var s = JSON.stringify( {
+                name: entry.name,
+                sid: entry.sid
+            });
+            followersStr = followersStr.concat( '¥', s );
+        });
+
         const entryObject = {
-        readyToTalk: this.readyToTalk,
-        asker: {
-            name: this.asker.name,
-            sid: this.asker.sid
-        },
-        question: this.question,
-        category: this.category,
-        followers: this.followers.map(follower => ({
-            name: follower.name,
-            sid: follower.sid
-        }))
+            readyToTalk: this.readyToTalk,
+            asker: {
+                name: this.asker.name,
+                sid: this.asker.sid
+            },
+            question: this.question,
+            category: this.category,
+            // followers: this.followers.map(follower => ({
+            //     name: follower.name,
+            //     sid: follower.sid
+            // }))
+            followers: followersStr
         };
+        
         return JSON.stringify(entryObject);
+
+
     }
 }
 
@@ -81,13 +95,22 @@ class Queue {
     }
     
     parseToJSON() {
-        var returnArray = [];
-        this.q.forEach(entry => {
-          console.log(entry);
-          console.log(entry.parseToJSON());
-          returnArray.push(JSON.stringify(entry.parseToJSON()));
+        // var returnArray = [];
+        // this.q.forEach(entry => {
+        //   console.log(entry);
+        //   console.log(entry.parseToJSON());
+        //   returnArray.push(JSON.stringify(entry.parseToJSON()));
+        // });
+        // return returnArray;
+
+        var outStr = "";
+        
+        this.q.forEach( entry => {
+            // console.log( entry )
+            outStr = outStr.concat( '€', entry.parseToJSON() );
         });
-        return returnArray;
+
+        return outStr.slice(1);
     }
 }
 
@@ -125,9 +148,9 @@ function start() {
   });
   
   app.get( '/getQueue', function(req, res) {
-    console.log('Added an entry into the queue!');
+    console.log('Recieved a GET call for the queue!');
     console.log( q.parseToJSON() );
-    res.send( (q.parseToJSON().toString()) );
+    res.send( q.parseToJSON() );
   });
 
   app.listen(port, function () {
