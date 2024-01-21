@@ -46,6 +46,16 @@ function getEntry() {
   xmlhttp.open( "POST", url );
   xmlhttp.setRequestHeader( "Content-Type", "application/json;charset=UTF-8" );
   xmlhttp.send( JSON.stringify( obj ) );
+
+  var listOfSID = localStorage.getItem("sid");
+  if (listOfSID === null) {
+    localStorage.setItem("sid", JSON.stringify([inputs.get('sid')]));
+  } else {
+    listOfSID = JSON.parse(listOfSID);
+    listOfSID.push(inputs.get('sid'));
+    localStorage.setItem("sid", JSON.stringify(listOfSID));
+  }
+  
 }
 
 const formSubmitButton = document.getElementById( 'submitQuestion' );
