@@ -33,3 +33,54 @@ for (i = 0; i < accordion1.length; i++){
     this.classList.toggle('active');
   })
 }
+
+url = "http://localhost:3000/getQueue"
+
+function parsePersonToJSON(personString) {
+    const personValues = personString.split(',');
+
+    const jsonPerson = {
+        name: personValues[0].trim(),
+        sid: personValues[1].trim(),
+    };
+    return jsonPerson;
+}
+
+function parseEntryToJSON(entryString) {
+    console.log( entryString );
+
+    const entryValues = entryString.split(',');
+
+    const jsonEntry = {
+        readyToTalk: entryValues[0].trim(),
+        asker: parsePersonToJSON(entryValues.slice(1, 2).join(',')),
+        question: entryValues[2].trim(),
+        category: entryValues[3].trim(),
+        followers: entryValues[4].trim(),
+    };
+    return jsonEntry;
+}
+
+function parseQueueToJSON( qString ) {
+    const entries = qString.split(',');
+
+    const jsonEntries = entries.map(entry => {
+        return JSON.parse( entry );
+    });
+    return jsonEntries;
+}
+
+function httpGetAsync()
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            // console.log(xmlHttp.responseText);
+            var test = parseQueueToJSON(xmlHttp.responseText);
+            console.log( test );
+        }
+    }
+    xmlHttp.open("GET", url, true); // true for asynchronous 
+    xmlHttp.send(null);
+}
+httpGetAsync()

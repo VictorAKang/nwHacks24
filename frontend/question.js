@@ -1,82 +1,129 @@
-url = "https://localhost:3000/addEntry";
+const express = require( "express" );
+const cors = require( "cors" )
 
-function getEntry() {
-  // form is the form of adding a new question
-  const form = document.getElementById( 'questionForm' );
-  const inputs = new FormData( form );
-
-  // for (const [key, value] of inputs) {
-  //   console.log(`${key}: ${value}\n`);
-  // }
-  // console.log( inputs.get('sid'))
-  // inputs[ 0 ] - name
-  // inputs[ 1 ] - student id
-  // inputs[ 2 ] - question
-  // inputs[ 3 ] - category, deprecated for now
-  if (inputs.get( 'name' ) == ""){
-    alert("Please enter a name.");
-    return;
-  }
-
-
-  if (inputs.get( 'sid' ) == ""){
-    alert("Please enter a valid student number.");
-    return;
-  }
-
-  const studentId = parseInt(inputs.get( 'sid' ) );
-  if (isNaN(studentId)) {
-      alert("Invalid student ID. Please enter a valid number.");
-      return;
-  }
-
-  if (inputs.get( 'question' ) == ""){
-    alert("Please enter a valid question.");
-    return;
-  }
-
-  var obj =  {
-    "name": inputs.get( 'name' ),
-    "sid": inputs.get( 'sid'),
-    "question": inputs.get( 'question' ),
-    "category": inputs.get( 'category')
-  };
-  
-  var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
-  // xmlHttp.onreadystatechange = function() {
-  //   alert( "Question added to Queue!" );
-  //   window.location.href = 'queue.html';
-  // }
-  xmlhttp.open( "POST", url );
-  xmlhttp.setRequestHeader( "Content-Type", "application/json;charset=UTF-8" );
-  xmlhttp.send( JSON.stringify( obj ) );
-
-  var xmlHttp = new XMLHttpRequest();
-  xmlHttp.onreadystatechange = function() { 
-      if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-          console.log(xmlHttp.responseText);
-  }
-  xmlHttp.open("GET", "0.0.0.0:3000/", true); // true for asynchronous 
-  xmlHttp.send(null);
+class Student {
+    constructor( name, sid ) {
+        this.name = name;
+        this.sid = sid;
+    }
 }
 
-const formSubmitButton = document.getElementById( 'submitQuestion' );
-// formSubmitButton.addEventListener( 'submit', getEntry );
-if (formSubmitButton) {
-  formSubmitButton.addEventListener( "click", getEntry);
+class Instructor {
+    constructor(name, entry) {
+        this.name = name;
+        this.entry = entry;
+    }
 }
 
 
+class Entry {
+    constructor( student, question, category ) {
+        this.readyToTalk = false;
+        this.asker= student;
+        this.question = question;
+        this.category = category;
+        this.followers = [];
+    }
 
-//Loader animation code
-window.addEventListener("load", () => {
-  const loader = document.querySelector(".loader");
+    addFollower( persons ) {
+        this.followers.push( ...persons );
+    }
 
-  //loader without delay
-  //loader.classList.add("loader-hidden");
-  setTimeout(() => loader.classList.add("loader-hidden"), 1000);
+    // flips the readyToTalk field
+    flipReadyToTalk() {
+        this.readyToTalk = !this.readyToTalk;
+    }
 
-  loader.addEventListener("transitionend", () => {
-    document.body.removeChild("loader");
+  parseToJSON() {
+    const entryObject = {
+      readyToTalk: this.readyToTalk,
+      asker: {
+        name: this.asker.name,
+        sid: this.asker.sid
+      },
+      question: this.question,
+      category: this.category,
+      followers: this.followers.map(follower => ({
+        name: follower.name,
+        sid: follower.sid
+      }))
+    };
+    return JSON.stringify(entryObject);
+  }
+}
+
+class Queue {
+    constructor() {
+        this.q = [];
+    }
+
+    // only add this entry if the student is not present
+    addQuestion( entry ) {
+      const studentInQueue = this.q.some(existingEntry =>   existingEntry.asker.sid === entry.asker.sid);
+
+      if (!studentInQueue) {
+          this.q.push(entry);
+          console.log(`${entry.asker.name}'s question added to the queue.`);
+      } else {
+          console.log(`${entry.asker.name}'s question not added to the queue. Student is already in the queue.`);
+      }
+
+
+        //this.q.push( entry );
+    }
+
+    //assume that entry is someone who is readytotalk
+    // assume that the q is not empty
+    // TODO: check if the q is empty
+    closeQuestion( entry ){
+      console.log(`${entry.asker.name}'s question closed.`);
+      this.q.remove( entry );
+    }
+
+    parseToJSON() {
+      var returnArray = [];
+      this.q.forEach(entry => {
+        console.log(entry);
+        console.log(entry.parseToJSON());
+        returnArray.push(JSON.stringify(entry.parseToJSON()));
+      });
+      return returnArray;
+    }
+}
+
+var q;
+
+function start() {
+  q = new Queue();
+
+  q.addQuestion(new Entry(new Student("Bowen", 49604481), "What is 1+1?", "Other"));
+  q.addQuestion(new Entry(new Student("Bowen1", 496044811), "What is 2+2?", "Other1"));
+  q.addQuestion(new Entry(new Student("Bowen2", 496044812), "What is 3+3?", "Other2"));
+
+  const app = express();
+  const port = 3000;
+
+  app.use( express.json() );
+  app.use( cors() );
+
+  app.post( "/addEntry", function ( req, res ) {
+    console.log( req.body );
   });
-})
+
+  app.get( '/', function(req, res) {
+    console.log('Got get request!');
+    res.send( "hello there!" );
+  });
+
+  app.get( '/getQueue', function(req, res) {
+    console.log('Added an entry into the queue!');
+    console.log( q.parseToJSON() );
+    res.send( (q.parseToJSON().toString()) );
+  })
+
+  app.listen(port, function () {
+    console.log(`Example app listening on port ${port}!`);
+  });
+}
+
+start()
