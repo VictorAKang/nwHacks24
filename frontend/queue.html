@@ -13,7 +13,7 @@
 </head>
 <header>
   <div class="logo">
-    <h2>EduQueue</h2>
+    <h2><a href="index.html">EduQueue</a></h2>
   </div>
 </header>
 
@@ -46,23 +46,23 @@
   <ul>
 
     <div class = "entry-container">
-      <div class = "entryServed">
+      <!-- <div class = "entryServed">
         <li>
           <h3>Name: Mary Jane</h3>
           <h3>Category: Lecture </h3>
           <h3>Question: I have a question. </h3>
         </li>
-      </div>
-      <!-- <div class = "entryServed">
+      </div> -->
+      <div class = "entryServed">
         <div class = "info"> 
-          <p>Mary Jane  |   lecture 
+          <p>NOW SERVING: Mary Jane  |   lecture 
           <span class="plus">+</span>
           </p>
         </div>
           <div class = "question">
             Question: I have a question. 
         </div>
-      </div> -->
+      </div> 
     <div class = "entry">
       <div class = "info"> 
         <p>John Doe  |   exam 
@@ -75,16 +75,8 @@
     </div>
     </div>
   </ul>
-  <script src="script.js"></script>
-  <script>
-    const accordion = document.getElementsByClassName('entry');
-
-    for (i = 0; i < accordion.length; i++){
-      accordion[i].addEventListener('click', function(){
-        this.classList.toggle('active');
-      })
-    }
-  </script>
+  <script src="queue.js"></script>
+  
 </body>
-
+  <div class="loader"></div>
 </html>
