@@ -34,7 +34,7 @@ function checkNotif() {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
             console.log(xmlHttp.responseText);
             callbackNotif( xmlHttp.responseText );   
-            // update();
+            update();
         }
 
     }
@@ -44,15 +44,15 @@ function checkNotif() {
     // xmlHttp.send( "hello")
 }
 
-// function update() {
-//     setTimeout( () => {
-//         console.log( 'checking for notif' );
-//         checkNotif();
-//     }, 10000 );
-// }
+function update() {
+    setTimeout( () => {
+        console.log( 'checking for notif' );
+        checkNotif();
+    }, 10000 );
+}
 
-// update()
+update()
 // sids = localStorage.getItem( "sid" );
 // sids = sids.slice( 1, -1 );
 // console.log( sids.split( ',').map( c => Number( c.slice( 1, -1 ) ) ) );
-checkNotif();
+// checkNotif();
