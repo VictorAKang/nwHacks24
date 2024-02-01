@@ -121,7 +121,7 @@ function yesf() {
 
     var listOfSID = localStorage.getItem("sid");
     if (listOfSID === null) {
-        localStorage.setItem("sid", JSON.stringify([inputs.get('sid')]));
+        localStorage.setItem("sid", JSON.stringify([qsid]));
     } else {
         listOfSID = JSON.parse(listOfSID);
         listOfSID.push(qsid);
