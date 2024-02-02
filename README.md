@@ -43,4 +43,7 @@ We developed this webpage through the use of **HTML, CSS, and JavaScript.** We u
 - Adding **option for students to yield when they are not ready** to ask questions when reached the front of the queue
 - Additional **UI/UX expansion for TAs/Instructors,** so they can also use the webpage to manage their availability during office hours
 
-
+## How to run
+- Open a terminal window and navigate to the backend folder
+- Run ``` npm start ```
+- Open the frontend/index.html file on your browser 
